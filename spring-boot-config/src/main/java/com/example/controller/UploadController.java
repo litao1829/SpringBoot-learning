@@ -18,6 +18,7 @@ public class UploadController {
     @GetMapping("/upload")
     @ResponseBody
     public String uploadFile(MultipartFile file){
+        System.out.println("上传文件中....");
         return  service.ossUpload(file);
     }
 }
