@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.StudentMapper">
+    <resultMap id="studentMap" type="Student">
+        <id column="student_id" property="studentId"></id>
+        <result column="student_name" property="studentName"></result>
+        <result column="hometown" property="hometown"></result>
+        <association property="clazz" javaType="Clazz">
+            <id column="clazz_id" property="clazzId"></id>
+            <result column="clazz_name" property="clazzName"></result>
+        </association>
+    </resultMap>
+
+
+
+    <select id="selectByClazzId" resultMap="studentMap" parameterType="int">
+        SELECT s.student_id,s.student_name,s.hometown,c.clazz_id,c.clazz_name
+        FROM t_student AS s,t_clazz AS c
+        WHERE c.clazz_id=#{clazzId}
+        AND s.clazz_id=c.clazz_id
+    </select>
+
+
+    <insert id="batchInsert" parameterType="Student">
+        INSERT INTO t_student VALUES
+        <foreach collection="students" item="student" index="index" separator=",">
+            (#{student.studentId},#{student.clazzId},#{student.studentName},
+             #{student.hometown},#{student.birthday})
+        </foreach>
+    </insert>
+
+
+    <update id="batchUpdate" parameterType="Student">
+    <foreach collection="students" item="student" index="index" open="" close=""
+             separator=";">
+        UPDATE t_student t
+        <set>
+            <if test="student.clazzId!=null">
+                `clazz_id`=#{student.clazzId},
+            </if>
+            <if test="student.studentName!=null">
+                `student_name`=#{student.studentName},
+            </if>
+            <if test="student.hometown!=null">
+                `hometown`=#{student.hometown},
+            </if>
+            <if test="student.birthday!=null">
+                `birthday`=#{student.birthday},
+            </if>
+            </set>
+            WHERE t.student_id=#{student.studentId}
+    </foreach>
+    </update>
+
+
+
+    <delete id="batchDelet" parameterType="integer">
+        DELETE FROM t_student
+        WHERE student_id in
+        <foreach collection="studentIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="dynamicSelect" resultType="Student">
+        SELECT * FROM t_student
+        WHERE 1=1
+        <choose>
+            <when test="clazzId!=null">
+                AND class_id=#{clazzId}
+            </when>
+            <when test="studentName!=null">
+                AND student_name=#{studentName}
+            </when>
+            <when test="hometown!=null">
+                AND hometown LIKE  "%"#{hometown}"%"
+            </when>
+        </choose>
+    </select>
+
+
+    <resultMap id="studentManyCourses" type="Student">
+        <id column="student_id" property="studentId"></id>
+        <result column="student_name" property="studentName"></result>
+        <result column="clazz_id" property="clazzId"></result>
+        <result column="hometown" property="hometown"></result>
+        <result column="birthday" property="birthday"></result>
+        <association property="clazz" javaType="Clazz">
+            <id column="clazz_id" property="clazzId"></id>
+            <result column="clazz_name" property="clazzName"></result>
+            <association property="teacher" javaType="Teacher">
+                <id column="teacher_id" property="teacherId"></id>
+                <result column="teacher_name" property="teacherName"></result>
+            </association>
+        </association>
+        <collection property="courses" ofType="Course">
+            <id column="course_id" property="courseId"></id>
+            <result column="course_name" property="courseName"></result>
+        </collection>
+    </resultMap>
+    <select id="ManyToMany" resultMap="studentManyCourses">
+        SELECT * FROM t_student AS s,t_clazz AS c,t_course AS co,
+                      t_course_student AS cos,t_teacher AS t
+        WHERE s.student_id=#{studentId}
+        AND s.clazz_id=c.clazz_id
+        AND s.student_id=cos.student_id
+        AND co.course_id=cos.course_id
+        AND t.clazz_id=c.clazz_id
+    </select>
+</mapper>

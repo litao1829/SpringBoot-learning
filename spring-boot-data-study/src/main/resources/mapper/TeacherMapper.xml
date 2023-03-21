@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.TeacherMapper">
+
+    <resultMap id="teacherMap" type="Teacher">
+        <id column="teacher_id" property="teacherId"></id>
+        <result column="teacher_name" property="teacherName"></result>
+        <association property="clazz" javaType="Clazz">
+            <id column="clazz_id" property="clazzId"></id>
+            <result column="clazz_name" property="clazzName"></result>
+        </association>
+    </resultMap>
+
+    <select id="selectOneByOne" resultMap="teacherMap" parameterType="integer">
+        SELECT * FROM t_teacher AS t,t_clazz As c
+        WHERE t.teacher_id=#{teacherId}
+        AND  t.clazz_id=c.clazz_id
+    </select>
+</mapper>

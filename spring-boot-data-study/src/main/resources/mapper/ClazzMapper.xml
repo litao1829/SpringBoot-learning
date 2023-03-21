@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ClazzMapper">
+    <resultMap id="clazzMap" type="Clazz">
+        <id column="clazz_id" property="clazzId"></id>
+        <result column="clazz_name" property="clazzName"></result>
+        <collection property="students" ofType="Student">
+            <id column="student_id" property="studentId"></id>
+            <result column="student_name" property="studentName"></result>
+            <result column="hometown" property="hometown"></result>
+        </collection>
+    </resultMap>
+    <select id="selectOneToMany" resultMap="clazzMap" parameterType="int">
+        SELECT c.clazz_id,c.clazz_name,s.student_id,s.student_name,s.hometown FROM t_clazz AS c,t_student AS s
+        WHERE c.clazz_id=#{clazzId}
+        AND c.clazz_id=s.clazz_id
+    </select>
+
+    <resultMap id="findTeacherMapper" type="Clazz">
+        <id column="clazz_id" property="clazzId"></id>
+        <result column="clazz_name" property="clazzName"></result>
+        <association property="teacher" javaType="Teacher">
+            <id column="teacher_id" property="teacherId"></id>
+            <result column="teacher_name" property="teacherName"></result>
+        </association>
+    </resultMap>
+
+    <select id="selectOneToOne" resultMap="findTeacherMapper" parameterType="int">
+        SELECT c.clazz_id,c.clazz_name,t.teacher_id,t.teacher_name FROM t_clazz AS c,t_teacher AS t
+        WHERE c.clazz_id=#{clazzid}
+        AND c.teacher_id=t.teacher_id
+    </select>
+</mapper>

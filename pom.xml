@@ -15,6 +15,7 @@
     <description>spring-study</description>
     <modules>
         <module>spring-boot-config</module>
+        <module>spring-boot-data-study</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -23,6 +24,9 @@
         <java.version>17</java.version>
         <lombok.version>1.18.24</lombok.version>
         <fastjson.version>1.2.83</fastjson.version>
+        <mysql.version>8.0.32</mysql.version>
+        <mybatis-starter.version>3.0.1</mybatis-starter.version>
+        <druid.version>1.2.8</druid.version>
     </properties>
 
     <dependencies>
@@ -50,7 +54,30 @@
             <version>1.18.24</version>
             <optional>true</optional>
         </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
     </dependencies>
+
 </dependencyManagement>
 
     <build>
