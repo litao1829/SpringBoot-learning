@@ -1,0 +1,8 @@
+GET http://localhost:9090/firstServlet
+Accept: application/json
+
+###
+GET http://localhost:9090/api/request
+Accept: application/json
+
+###
