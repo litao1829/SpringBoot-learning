@@ -17,6 +17,7 @@
         <module>spring-boot-config</module>
         <module>spring-boot-data-study</module>
         <module>spring-boot-filter-interceptor</module>
+        <module>spring-boot-global-exception-learning</module>
     </modules>
 
     <packaging>pom</packaging>
