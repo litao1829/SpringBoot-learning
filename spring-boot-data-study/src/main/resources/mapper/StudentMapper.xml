@@ -29,6 +29,10 @@
              #{student.hometown},#{student.birthday})
         </foreach>
     </insert>
+    <insert id="createStudentAutoKey" parameterType="Student" useGeneratedKeys="true" keyProperty="studentId">
+            INSERT INTO t_student (clazz_id,student_name,hometown,birthday)
+             values (#{clazzId},#{studentName},#{hometown},#{birthday})
+    </insert>
 
 
     <update id="batchUpdate" parameterType="Student">
@@ -108,5 +112,46 @@
         AND s.student_id=cos.student_id
         AND co.course_id=cos.course_id
         AND t.clazz_id=c.clazz_id
+    </select>
+
+    <select id="queryLike" parameterType="Student" resultType="Student">
+        SELECT * FROM t_student
+        <where>
+            <if test="studentName!=null">
+                student_name LIKE concat('%',concat(#{studentName},'%'))
+            </if>
+        </where>
+    </select>
+    <select id="getStudentListChoose" resultType="Student">
+        SELECT * FROM t_student
+        <where>
+            <choose>
+
+                <when test="clazzId!=null">
+                    clazz_id=#{clazzId,jdbcType=INTEGER}
+                </when>
+                <when test="studentName!=null and studentName!=''">
+                    student_name LIKE concat(#{studentName,jdbcType=VARCHAR},'%')
+                </when>
+            </choose>
+        </where>
+    </select>
+    <select id="getStudentListIf" resultType="Student" parameterType="Student">
+        SELECT *
+        FROM t_student s
+        <where>
+            <if test="clazzId != null ">
+                s.clazz_id = #{clazzId, jdbcType=INTEGER}
+            </if>
+            <if test="studentName !=null ">
+                AND s.student_name LIKE CONCAT(CONCAT('%', #{studentName, jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="hometown != null">
+                AND s.hometown = #{hometown, jdbcType=VARCHAR}
+            </if>
+            <if test="birthday!= null ">
+                AND s.birthday = #{birthday, jdbcType=DATE}
+            </if>
+        </where>
     </select>
 </mapper>

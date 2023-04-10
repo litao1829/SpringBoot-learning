@@ -46,4 +46,21 @@ public interface StudentMapper {
 
         //动态查询
         List<Student> dynamicSelect(Student student);
+
+
+        //模糊查询使用concat
+        List<Student> queryLike(Student student);
+
+
+        //choose标签：choose标签搭配when和otherwise标签使用
+        //当一个when中的条件满足时，choose结束，如果没有满足的则执行otherwise中的。
+        //当多条when满足时，从上到下选择一个。
+        List<Student> getStudentListChoose(Student student);
+
+        //插入对象的生成主键,生成的主键会自动给传入的参数对象中
+        void createStudentAutoKey(Student student);
+
+
+        List<Student> getStudentListIf(Student student);
+
 }

@@ -1,0 +1,16 @@
+web:
+  upload-path: D:\upload\
+
+spring:
+  web:
+    resources:
+      static-locations: classpath:/static/,classpath:/public/,classpath:/templates/,file:${web.upload-path}
+  servlet:
+    multipart:
+      max-file-size: 104857600
+      max-request-size: 104857600
+
+minio:
+  endPoint: http://43.137.12.232:9000
+  accessKey: admin
+  secretKey: 12345678

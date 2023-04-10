@@ -121,4 +121,43 @@ class StudentMapperTest {
         Teacher teacher = student.getClazz().getTeacher();
         System.out.println(teacher);
     }
+
+    @Test
+    void queryLike() {
+        Student student= Student.builder()
+                .studentName("康").build();
+        List<Student> students = studentMapper.queryLike(student);
+        students.forEach(System.out::println);
+    }
+
+    @Test
+    void getStudentListChoose() {
+        Student student= Student.builder()
+                .clazzId(1)
+                .studentName("张").build();
+        List<Student> students = studentMapper.getStudentListChoose(student);
+        students.forEach(System.out::println);
+        //根据结果可以看见，when标签只要有一个test满足下面的when标签就不会执行
+    }
+
+    @Test
+    void createStudentAutoKey() {
+        Student student= Student.builder()
+                .studentName("aa")
+                .clazzId(1)
+                .hometown("无锡")
+                .birthday(LocalDate.of(2001,07,12)).build();
+        studentMapper.createStudentAutoKey(student);
+        System.out.println(student.getStudentId());
+    }
+
+    @Test
+    void getStudentListIf() {
+        Student student= Student.builder()
+                .clazzId(1)
+                .studentName("康")
+                .build();
+        List<Student> students = studentMapper.getStudentListIf(student);
+        students.forEach(System.out::println);
+    }
 }
