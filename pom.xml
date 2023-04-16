@@ -20,6 +20,7 @@
         <module>spring-boot-global-exception-learning</module>
         <module>spring-boot-task</module>
         <module>spring-boot-file-study</module>
+        <module>spring-cache-learning</module>
     </modules>
 
     <packaging>pom</packaging>
