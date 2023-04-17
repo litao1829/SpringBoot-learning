@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SSE-Demo</title>
+</head>
+<body>
+<div id="msg-box">
+    接收服务端推送消息
+</div>
+<script>
+        //连上sse
+        if(!!window.EventSource){
+            //指定请求路径
+            let source=new EventSource("http://localhost:8080/sse/msg");
+            source.onopen=(e)=>{
+                console.log(e);
+            }
+
+            source.onmessage=(event)=>{
+                    console.log(event);
+                    console.log(event.origin);
+                    document.getElementById("msg-box").innerHTML=event.data;
+                if(!event.data){
+                    source.close();
+                }
+            }
+
+
+            //当连接发生error是出发
+            source.onerror=(e)=>{
+                console.log(e);
+            }
+            // //打开连接
+            // source.addEventListener("open",()=>{
+            //     console.log("打开连接");
+            // },false)
+            //
+            // //接收消息
+            // source.addEventListener("message",(e)=>{
+            //     console.log(e);
+            // })
+            //
+            // //错误
+            // source.addEventListener("error",(error)=>{
+            //     console.log(error);
+            // })
+        }
+        else {
+            alert("当前浏览器不支持SSE")
+        }
+
+</script>
+</body>
+</html>

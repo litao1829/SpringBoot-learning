@@ -21,6 +21,7 @@
         <module>spring-boot-task</module>
         <module>spring-boot-file-study</module>
         <module>spring-cache-learning</module>
+        <module>spring-boot-server-push</module>
     </modules>
 
     <packaging>pom</packaging>
